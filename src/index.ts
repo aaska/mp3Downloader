@@ -2,41 +2,74 @@ import * as process from "process";
 import * as fs from "fs";
 import fetch from "node-fetch";
 import { spawnSync } from "child_process";
+import { StudioBuilder } from "./StudioBuilder";
 
-const savedPath = "/tmp/"; /* change this to define the download path */
+export const savedPath = process.env.HOME + "/mp3Downloader/"; // Change here for folder
 const temp = "/tmp";
-interface IMP3List {
+export interface IMP3List {
   title: string;
   url: string;
   filename: string;
+  voicePath: string;
+  imagePath: string;
+  storyPath: string;
 }
+
+async function downloadToFile(url: string, output: string) {
+  let dst = fs.createWriteStream(output);
+  let buffer = await (await fetch(url)).buffer();
+  await dst.write(buffer);
+  dst.close();
+}
+
 async function fetchMp3(source: IMP3List[]) {
   for (let s of source) {
     let split = s.url.split(".");
-    s.filename = s.title.replace(
-      /[ ()\.\/\[\]\\#\+\-\=\$\@\!\%\^\&\*\-\_\?\<\>\,\.\:\;\'\"]/g,
-      ""
-    ) + "." + split[split.length-1].split("?")[0];
+    s.filename =
+      s.title.replace(
+        /[ ()\.\/\[\]\\#\+\-\=\$\@\!\%\^\&\*\-\_\?\<\>\,\.\:\;\'\"]/g,
+        ""
+      ) +
+      "." +
+      split[split.length - 1];
+    s.filename = s.filename
+      .split("?")[0]
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
+
+    let baseName = `${savedPath}${s.filename.split(".")[0]}`;
 
     let localPath = `${savedPath}raw-${s.filename}`;
-    let finalPath = `${savedPath}${s.filename.split(".")[0]}.mp3`;
-    let tempPath = `${savedPath}${s.filename.split(".")[0]}-tmp.mp3`
-    let voicePath = `${savedPath}${s.filename.split(".")[0]}-voice.mp3`;
-    let ttsPath = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&q=${encodeURI(s.title)}&tl=fr&total=1&idx=0&textlen=${encodeURI(s.title).length}`
+    s.storyPath = `${baseName}.mp3`;
+    let tempPath = `${baseName}-tmp.mp3`;
+    s.voicePath = `${baseName}-voice.mp3`;
+    s.imagePath = `${baseName}.png`;
+    let ttsPath = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&q=${encodeURI(
+      s.title
+    )}&tl=fr&total=1&idx=0&textlen=${encodeURI(s.title).length}`;
     console.log(localPath);
-    let dest = fs.createWriteStream(localPath);
-    let destvoice = fs.createWriteStream(voicePath);
+    await downloadToFile(s.url, localPath);
+    await downloadToFile(ttsPath, s.voicePath);
+
     console.log(`[${s.title}] - fetching ${s.filename}`);
-    let resvoice = await fetch(ttsPath);
-    let buffervoice = await resvoice.buffer();
-    let res = await fetch(s.url);
-    let buffer = await res.buffer();
 
+    // Creating node image with ImageMagick
+    let k = spawnSync(
+      "convert",
+      [
+        `-size 320x240 -background black`,
+        `-font Courier-bold -gravity center`,
+        `+repage -strip -depth 4 -type palette`,
+        `-alpha off +profile '!exif,*'`,
+        `-fill white`,
+        `caption:"${s.title.replace('"', '\\"')}"`,
+        s.imagePath
+      ],
+      { shell: true }
+    );
+    console.log(k.stderr.toString());
 
-    await destvoice.write(buffervoice);
-    await dest.write(buffer);
-    dest.close();
-    destvoice.close();
+    // Converting mp3 to mono
     let p = spawnSync(
       "ffmpeg",
       [
@@ -46,13 +79,12 @@ async function fetchMp3(source: IMP3List[]) {
         "-ac 1",
         // `-map 0 -map_metadata 0:s:0`,
         "-acodec libmp3lame",
-        `${tempPath}`, // output file
+        `${tempPath}` // output file
       ],
       { shell: true }
     );
 
-    // console.log("-----------------", p.stderr.toString());
-
+    // Extracting images from mp3 id3 if any
     let i = spawnSync(
       "ffmpeg",
       [
@@ -60,35 +92,32 @@ async function fetchMp3(source: IMP3List[]) {
         `-i ${localPath}`,
         "-an",
         "-vcodec copy",
-        `${finalPath}.png`  
+        `${s.storyPath}-mp3.png`
       ],
       { shell: true }
     );
+
+    // Removing images from mp3
     let j = spawnSync(
       "ffmpeg",
       [
         `-y`,
         `-i ${tempPath}`,
         "-map 0:a -codec:a copy -map_metadata -1",
-        `${finalPath}`
+        `${s.storyPath}`
       ],
       { shell: true }
-    )
-    // console.log("-----------------", j.stderr.toString());
+    );
 
     fs.unlink(`${tempPath}`, (err) => console.log(err));
     fs.unlink(localPath, (err) => console.log(err)); // removing working file.
   }
 }
 
-
 async function getRss(url: string) {
-  // let rss = await (await fetch(url)).text();
   let Parser = require("rss-parser");
   let parser = new Parser();
   let mp3list: IMP3List[] = [];
-
-  //const parser = new Parser();
 
   let feed = await parser.parseURL(url);
 
@@ -96,12 +125,17 @@ async function getRss(url: string) {
     mp3list.push({
       title: i.title,
       url: i.enclosure.url,
-      filename: ""
+      filename: "",
+      imagePath: "",
+      storyPath: "",
+      voicePath: ""
     });
-    // console.log(i.title + ':' + i.enclosure.url);
   });
 
+  if (!fs.existsSync(savedPath)) fs.mkdirSync(savedPath);
+
   await fetchMp3(mp3list);
+  new StudioBuilder(mp3list);
 }
 
 async function listener(e: any) {
@@ -114,7 +148,7 @@ async function listener(e: any) {
   await getRss(value);
 }
 
-// start();
+console.log("Enter RSS URL : ");
 
 let stdin = process.openStdin();
 stdin.addListener("data", listener);

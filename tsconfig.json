@@ -59,7 +59,7 @@
     /* Experimental Options */
     "allowSyntheticDefaultImports": true,
     "preserveConstEnums": true,
-    "allowJs": false,
+    "allowJs": true,
     "sourceMap": true,
     "skipLibCheck": true,
 
