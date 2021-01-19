@@ -1,0 +1,443 @@
+{
+    "format": "v1",
+    "title": "Pack Title",
+    "version": 1,
+    "description": "Description",
+    "stageNodes": [
+        {
+            "uuid": "5c633b83-06f4-46f2-879a-bc27ce6d7877",
+            "type": "cover",
+            "name": "Cover node",
+            "position": {
+                "x": 165,
+                "y": 463.96697490092413
+            },
+            "image": null,
+            "audio": "06a16c498f28d9d17c0067cc292a3e0c7feb8384.mp3",
+            "okTransition": {
+                "actionNode": "5e3c14f3-3327-4149-991a-111111111111",
+                "optionIndex": 0
+            },
+            "homeTransition": null,
+            "controlSettings": {
+                "wheel": true,
+                "ok": true,
+                "home": false,
+                "pause": false,
+                "autoplay": false
+            },
+            "squareOne": true
+        },
+        {
+            "uuid": "e2c7c7cc-75da-468e-82a0-fa33ac97fc40",
+            "type": "story",
+            "name": "Story node",
+            "position": null,
+            "image": null,
+            "audio": "3930b10d5bdf316b665e26682fabc7d551c34e41.mp3",
+            "okTransition": {
+                "actionNode": "5e3c14f3-3327-4149-991a-111111111111",
+                "optionIndex": 0
+            },
+            "homeTransition": {
+                "actionNode": "5e3c14f3-3327-4149-991a-111111111111",
+                "optionIndex": 0
+            },
+            "controlSettings": {
+                "wheel": false,
+                "ok": false,
+                "home": true,
+                "pause": true,
+                "autoplay": true
+            },
+            "groupId": "e2c7c7cc-75da-468e-82a0-fa33ac97fc40"
+        },
+        {
+            "uuid": "c8d323d8-2ac4-468f-823e-2f816c1d0aed",
+            "type": "story",
+            "name": "Story node",
+            "position": null,
+            "image": null,
+            "audio": "70edd0f4ce07227620970a9fbc65405c887af0fd.mp3",
+            "okTransition": {
+                "actionNode": "5e3c14f3-3327-4149-991a-111111111111",
+                "optionIndex": 0
+            },
+            "homeTransition": {
+                "actionNode": "5e3c14f3-3327-4149-991a-111111111111",
+                "optionIndex": 0
+            },
+            "controlSettings": {
+                "wheel": false,
+                "ok": false,
+                "home": true,
+                "pause": true,
+                "autoplay": true
+            },
+            "groupId": "c8d323d8-2ac4-468f-823e-2f816c1d0aed"
+        },
+        {
+            "uuid": "c3def6b8-71bc-4500-824c-c47e05b3d478",
+            "type": "story",
+            "name": "Story node",
+            "position": null,
+            "image": null,
+            "audio": null,
+            "okTransition": {
+                "actionNode": "5e3c14f3-3327-4149-991a-111111111111",
+                "optionIndex": 0
+            },
+            "homeTransition": {
+                "actionNode": "5e3c14f3-3327-4149-991a-111111111111",
+                "optionIndex": 0
+            },
+            "controlSettings": {
+                "wheel": false,
+                "ok": false,
+                "home": true,
+                "pause": true,
+                "autoplay": true
+            },
+            "groupId": "c3def6b8-71bc-4500-824c-c47e05b3d478"
+        },
+        {
+            "uuid": "44b79c61-6f3d-4e81-b6b3-9d4d5d4e0916",
+            "type": "story",
+            "name": "Story node",
+            "position": null,
+            "image": null,
+            "audio": null,
+            "okTransition": {
+                "actionNode": "5e3c14f3-3327-4149-991a-111111111111",
+                "optionIndex": 0
+            },
+            "homeTransition": {
+                "actionNode": "5e3c14f3-3327-4149-991a-111111111111",
+                "optionIndex": 0
+            },
+            "controlSettings": {
+                "wheel": false,
+                "ok": false,
+                "home": true,
+                "pause": true,
+                "autoplay": true
+            },
+            "groupId": "44b79c61-6f3d-4e81-b6b3-9d4d5d4e0916"
+        },
+        {
+            "uuid": "5e3c14f3-3327-4149-991a-222222222222",
+            "type": "menu.questionstage",
+            "groupId": "5e3c14f3-3327-4149-991a-e1d74e392612",
+            "name": "Primary Menu",
+            "image": null,
+            "audio": "85962bbca42a9f7b4739a2a3e13898eca6a58418.mp3",
+            "okTransition": {
+                "actionNode": "5e3c14f3-3327-4149-991a-333333333333",
+                "optionIndex": 0
+            },
+            "homeTransition": null,
+            "controlSettings": {
+                "wheel": false,
+                "ok": false,
+                "home": false,
+                "pause": false,
+                "autoplay": true
+            }
+        },
+        {
+            "uuid": "5e3c14f3-3327-4149-991a-444444440000",
+            "type": "menu.optionstage",
+            "groupId": "5e3c14f3-3327-4149-991a-e1d74e392612",
+            "name": "PM Option #1",
+            "image": null,
+            "audio": "ba4bcb3e4bcbb659d33c33c9e917c3bebe03b116.mp3",
+            "okTransition": {
+                "actionNode": "212c906a-6334-4737-89d5-111111111111",
+                "optionIndex": 0
+            },
+            "homeTransition": null,
+            "controlSettings": {
+                "wheel": true,
+                "ok": true,
+                "home": true,
+                "pause": false,
+                "autoplay": false
+            }
+        },
+        {
+            "uuid": "5e3c14f3-3327-4149-991a-444444440001",
+            "type": "menu.optionstage",
+            "groupId": "5e3c14f3-3327-4149-991a-e1d74e392612",
+            "name": "PM Option #2",
+            "image": null,
+            "audio": "3a2d94ae0b784a0d3d91a1ac3d192bb2527eae4d.mp3",
+            "okTransition": {
+                "actionNode": "c09a4f88-c664-4fc5-ac03-111111111111",
+                "optionIndex": 0
+            },
+            "homeTransition": null,
+            "controlSettings": {
+                "wheel": true,
+                "ok": true,
+                "home": true,
+                "pause": false,
+                "autoplay": false
+            }
+        },
+        {
+            "uuid": "212c906a-6334-4737-89d5-222222222222",
+            "type": "menu.questionstage",
+            "groupId": "212c906a-6334-4737-89d5-14f819502fdb",
+            "name": "Secondary Menu",
+            "image": null,
+            "audio": null,
+            "okTransition": {
+                "actionNode": "212c906a-6334-4737-89d5-333333333333",
+                "optionIndex": 0
+            },
+            "homeTransition": null,
+            "controlSettings": {
+                "wheel": false,
+                "ok": false,
+                "home": false,
+                "pause": false,
+                "autoplay": true
+            }
+        },
+        {
+            "uuid": "212c906a-6334-4737-89d5-444444440000",
+            "type": "menu.optionstage",
+            "groupId": "212c906a-6334-4737-89d5-14f819502fdb",
+            "name": "SM Option #1",
+            "image": null,
+            "audio": null,
+            "okTransition": {
+                "actionNode": "e2c7c7cc-75da-468e-82a0-555555555555",
+                "optionIndex": 0
+            },
+            "homeTransition": {
+                "actionNode": "5e3c14f3-3327-4149-991a-111111111111",
+                "optionIndex": 0
+            },
+            "controlSettings": {
+                "wheel": true,
+                "ok": true,
+                "home": true,
+                "pause": false,
+                "autoplay": false
+            }
+        },
+        {
+            "uuid": "212c906a-6334-4737-89d5-444444440001",
+            "type": "menu.optionstage",
+            "groupId": "212c906a-6334-4737-89d5-14f819502fdb",
+            "name": "SM Option #2",
+            "image": null,
+            "audio": null,
+            "okTransition": {
+                "actionNode": "c8d323d8-2ac4-468f-823e-555555555555",
+                "optionIndex": 0
+            },
+            "homeTransition": {
+                "actionNode": "5e3c14f3-3327-4149-991a-111111111111",
+                "optionIndex": 0
+            },
+            "controlSettings": {
+                "wheel": true,
+                "ok": true,
+                "home": true,
+                "pause": false,
+                "autoplay": false
+            }
+        },
+        {
+            "uuid": "c09a4f88-c664-4fc5-ac03-222222222222",
+            "type": "menu.questionstage",
+            "groupId": "c09a4f88-c664-4fc5-ac03-520f3627a044",
+            "name": "Tertiary Menu",
+            "image": null,
+            "audio": null,
+            "okTransition": {
+                "actionNode": "c09a4f88-c664-4fc5-ac03-333333333333",
+                "optionIndex": 0
+            },
+            "homeTransition": null,
+            "controlSettings": {
+                "wheel": false,
+                "ok": false,
+                "home": false,
+                "pause": false,
+                "autoplay": true
+            }
+        },
+        {
+            "uuid": "c09a4f88-c664-4fc5-ac03-444444440000",
+            "type": "menu.optionstage",
+            "groupId": "c09a4f88-c664-4fc5-ac03-520f3627a044",
+            "name": "TM Option #1",
+            "image": null,
+            "audio": null,
+            "okTransition": {
+                "actionNode": "c3def6b8-71bc-4500-824c-555555555555",
+                "optionIndex": 0
+            },
+            "homeTransition": {
+                "actionNode": "5e3c14f3-3327-4149-991a-111111111111",
+                "optionIndex": 0
+            },
+            "controlSettings": {
+                "wheel": true,
+                "ok": true,
+                "home": true,
+                "pause": false,
+                "autoplay": false
+            }
+        },
+        {
+            "uuid": "c09a4f88-c664-4fc5-ac03-444444440001",
+            "type": "menu.optionstage",
+            "groupId": "c09a4f88-c664-4fc5-ac03-520f3627a044",
+            "name": "TM Option #2",
+            "image": null,
+            "audio": null,
+            "okTransition": {
+                "actionNode": "44b79c61-6f3d-4e81-b6b3-555555555555",
+                "optionIndex": 0
+            },
+            "homeTransition": {
+                "actionNode": "5e3c14f3-3327-4149-991a-111111111111",
+                "optionIndex": 0
+            },
+            "controlSettings": {
+                "wheel": true,
+                "ok": true,
+                "home": true,
+                "pause": false,
+                "autoplay": false
+            }
+        }
+    ],
+    "actionNodes": [
+        {
+            "id": "5e3c14f3-3327-4149-991a-111111111111",
+            "type": "menu.questionaction",
+            "groupId": "5e3c14f3-3327-4149-991a-e1d74e392612",
+            "name": "Primary Menu.questionaction",
+            "position": {
+                "x": 389.32289111153045,
+                "y": 250.40819022457055
+            },
+            "options": [
+                "5e3c14f3-3327-4149-991a-222222222222"
+            ]
+        },
+        {
+            "id": "5e3c14f3-3327-4149-991a-333333333333",
+            "type": "menu.optionsaction",
+            "groupId": "5e3c14f3-3327-4149-991a-e1d74e392612",
+            "name": "Primary Menu.optionsaction",
+            "options": [
+                "5e3c14f3-3327-4149-991a-444444440000",
+                "5e3c14f3-3327-4149-991a-444444440001"
+            ]
+        },
+        {
+            "id": "212c906a-6334-4737-89d5-111111111111",
+            "type": "menu.questionaction",
+            "groupId": "212c906a-6334-4737-89d5-14f819502fdb",
+            "name": "Secondary Menu.questionaction",
+            "position": {
+                "x": 705,
+                "y": 79
+            },
+            "options": [
+                "212c906a-6334-4737-89d5-222222222222"
+            ]
+        },
+        {
+            "id": "212c906a-6334-4737-89d5-333333333333",
+            "type": "menu.optionsaction",
+            "groupId": "212c906a-6334-4737-89d5-14f819502fdb",
+            "name": "Secondary Menu.optionsaction",
+            "options": [
+                "212c906a-6334-4737-89d5-444444440000",
+                "212c906a-6334-4737-89d5-444444440001"
+            ]
+        },
+        {
+            "id": "c09a4f88-c664-4fc5-ac03-111111111111",
+            "type": "menu.questionaction",
+            "groupId": "c09a4f88-c664-4fc5-ac03-520f3627a044",
+            "name": "Tertiary Menu.questionaction",
+            "position": {
+                "x": 700.1558979816546,
+                "y": 418.3015806118212
+            },
+            "options": [
+                "c09a4f88-c664-4fc5-ac03-222222222222"
+            ]
+        },
+        {
+            "id": "c09a4f88-c664-4fc5-ac03-333333333333",
+            "type": "menu.optionsaction",
+            "groupId": "c09a4f88-c664-4fc5-ac03-520f3627a044",
+            "name": "Tertiary Menu.optionsaction",
+            "options": [
+                "c09a4f88-c664-4fc5-ac03-444444440000",
+                "c09a4f88-c664-4fc5-ac03-444444440001"
+            ]
+        },
+        {
+            "id": "e2c7c7cc-75da-468e-82a0-555555555555",
+            "type": "story.storyaction",
+            "groupId": "e2c7c7cc-75da-468e-82a0-fa33ac97fc40",
+            "name": "Story node.storyaction",
+            "position": {
+                "x": 1077.906020003774,
+                "y": 69
+            },
+            "options": [
+                "e2c7c7cc-75da-468e-82a0-fa33ac97fc40"
+            ]
+        },
+        {
+            "id": "c8d323d8-2ac4-468f-823e-555555555555",
+            "type": "story.storyaction",
+            "groupId": "c8d323d8-2ac4-468f-823e-2f816c1d0aed",
+            "name": "Story node.storyaction",
+            "position": {
+                "x": 1077.8111895439686,
+                "y": 249.1991621011924
+            },
+            "options": [
+                "c8d323d8-2ac4-468f-823e-2f816c1d0aed"
+            ]
+        },
+        {
+            "id": "c3def6b8-71bc-4500-824c-555555555555",
+            "type": "story.storyaction",
+            "groupId": "c3def6b8-71bc-4500-824c-c47e05b3d478",
+            "name": "Story node.storyaction",
+            "position": {
+                "x": 1073.3201225004493,
+                "y": 447.4869392902175
+            },
+            "options": [
+                "c3def6b8-71bc-4500-824c-c47e05b3d478"
+            ]
+        },
+        {
+            "id": "44b79c61-6f3d-4e81-b6b3-555555555555",
+            "type": "story.storyaction",
+            "groupId": "44b79c61-6f3d-4e81-b6b3-9d4d5d4e0916",
+            "name": "Story node.storyaction",
+            "position": {
+                "x": 1065.7539182129333,
+                "y": 622.5905242298678
+            },
+            "options": [
+                "44b79c61-6f3d-4e81-b6b3-9d4d5d4e0916"
+            ]
+        }
+    ]
+}
