@@ -43,14 +43,23 @@ export class StudioBuilder {
     );
   }
 
-  private createActionNode(type: EnumActionType): IActionNode {
+  private createActionNode(
+    type: EnumActionType,
+    level: { levelHorizontal: number; levelVertical: number } = {
+      levelHorizontal: 1,
+      levelVertical: 1
+    }
+  ): IActionNode {
     let id = uuidv4();
     let action: IActionNode = {
       groupId: "",
       id: id,
       name: type.toString(),
       options: [],
-      position: { x: 10, y: 10 },
+      position: {
+        x: level.levelHorizontal * 350,
+        y: level.levelVertical * 350
+      },
       type
     };
     return action;
@@ -59,13 +68,20 @@ export class StudioBuilder {
   private createStageNode(
     audio: string,
     name: string,
-    type: EnumStageType
+    type: EnumStageType,
+    level: { levelHorizontal: number; levelVertical: number } = {
+      levelHorizontal: 1,
+      levelVertical: 1
+    }
   ): IStageNode {
     let stage: IStageNode = {
       uuid: uuidv4(),
       type,
       name,
-      position: { x: 10, y: 10 },
+      position: {
+        x: level.levelHorizontal * 350,
+        y: level.levelVertical * 350
+      },
       image: null,
       audio,
       okTransition: { actionNode: "", optionIndex: 0 },
@@ -81,7 +97,7 @@ export class StudioBuilder {
     if (type === EnumStageType.COVER) stage.squareOne = true;
     if (type === EnumStageType.STORY) {
       stage.groupId = stage.uuid;
-      stage.position = null;
+      // stage.position = null;
     }
     if (type === EnumStageType.MENU_QUESTION) stage.position = undefined;
     return stage;
@@ -95,7 +111,8 @@ export class StudioBuilder {
     this.stages[0] = this.createStageNode(
       getFileName(audioCover),
       "cover",
-      EnumStageType.COVER
+      EnumStageType.COVER,
+      { levelHorizontal: 1, levelVertical: 1 }
     );
     this.stages[0].image = getFileName(audioCover) + ".png";
     this.stages[0].squareOne = true;
@@ -113,7 +130,8 @@ export class StudioBuilder {
     this.stages[1] = this.createStageNode(
       getFileName(audioMenu),
       "Menu node",
-      EnumStageType.MENU_QUESTION
+      EnumStageType.MENU_QUESTION,
+      { levelHorizontal: 2, levelVertical: 1 }
     );
     let mainGroupId = uuidv4();
     this.stages[1].groupId = mainGroupId;
@@ -134,17 +152,28 @@ export class StudioBuilder {
     let menuAction = this.createActionNode(EnumActionType.MENU_OPTION);
     menuAction.groupId = mainGroupId;
     menuAction.options = [];
+    this.stages[1].okTransition = {
+      actionNode: menuAction.id,
+      optionIndex: 0
+    };
     this.actions.push(menuAction);
     return mainGroupId;
   }
-  //https://feed.ausha.co/brvl6HgdLxW8
-  private async createSubMenu(name: string): Promise<IStageNode> {
+
+  private async createSubMenu(
+    name: string,
+    idx: number = 1
+  ): Promise<IStageNode> {
     let audio = assetPath + "chooseStory" + ".mp3";
     await downloadTTSVoice(audio, "Choisi une histoire");
     let menuPack = this.createStageNode(
       getFileName(audio),
       name,
-      EnumStageType.MENU_QUESTION
+      EnumStageType.MENU_QUESTION,
+      {
+        levelHorizontal: 3,
+        levelVertical: idx
+      }
     );
     menuPack.groupId = uuidv4();
     menuPack.controlSettings = {
@@ -185,6 +214,7 @@ export class StudioBuilder {
     menuOption.homeTransition = undefined;
     menuOption.position = undefined;
     let okAction = this.createActionNode(EnumActionType.MENU_QUESTION);
+    okAction.options = [currentPack.uuid];
     okAction.groupId = currentPack.groupId;
     menuOption.okTransition = {
       actionNode: okAction.id,
@@ -219,11 +249,15 @@ export class StudioBuilder {
         y < (i + 1) * maxStoryPerPack && y < list.length;
         y++
       ) {
-        console.log(`${y} - ${i}`);
+        // console.log(`${y} - ${i}`);
         let story = this.createStageNode(
           getFileName(list[y].storyPath),
           list[y].title,
-          EnumStageType.STORY
+          EnumStageType.STORY,
+          {
+            levelHorizontal: 4,
+            levelVertical: y
+          }
         );
         story.controlSettings = {
           wheel: false,
@@ -267,8 +301,12 @@ export class StudioBuilder {
       }
 
       let menuActions = this.createActionNode(EnumActionType.MENU_OPTION);
-      menuActions.groupId = mainGroupId;
+      menuActions.groupId = menuPack.groupId;
       menuActions.options = optionsList;
+      menuPack.okTransition = {
+        actionNode: menuActions.id,
+        optionIndex: 0
+      };
       this.actions.push(menuActions);
     }
 

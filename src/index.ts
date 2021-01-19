@@ -140,11 +140,9 @@ async function getRss(url: string) {
     });
   });
 
-  // if (!fs.existsSync(savedPath)) fs.mkdirSync(savedPath);
-
   await fetchMp3(mp3list);
   let sb = new StudioBuilder(info);
-  sb.createStory(mp3list);
+  await sb.createStory(mp3list);
   console.log("Pack created");
 }
 
