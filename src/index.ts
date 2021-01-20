@@ -130,8 +130,16 @@ async function getRss(url: string) {
     title: feed.title
   };
 
-  if (!!info.image && info.image.url)
+  if (!!info.image && info.image.url) {
     await downloadToFile(info.image.url, savedPath + "cover.jpeg");
+    let c = spawnSync(
+      "convert",
+      [`${savedPath}cover.jpeg`, `${savedPath}thumbnail.png`],
+      { shell: true }
+    );
+    console.log(c.stdout.toString());
+    fs.unlink(`${savedPath}cover.jpeg`, (err) => console.log(err));
+  }
 
   feed.items.forEach((i) => {
     mp3list.push({
