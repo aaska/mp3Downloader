@@ -15,15 +15,19 @@ import {
   sanitizeFileName
 } from "./utils/utils";
 
+/**
+ * Class to build the story.json compatible with STUdio
+ */
 export class StudioBuilder {
   private actions: IActionNode[] = [];
   private stages: IStageNode[] = [];
   private root: IRootObject;
 
-  constructor(
-    // list: IMP3List[],
-    info: IFeedInformation
-  ) {
+  /**
+   *
+   * @param info feed information from the RSS
+   */
+  constructor(info: IFeedInformation) {
     this.root = {
       version: 1,
       description: info.description ?? "",
@@ -34,6 +38,9 @@ export class StudioBuilder {
     };
   }
 
+  /**
+   * write the story.json to the disk
+   */
   private writeAssetJson() {
     fs.writeFile(
       `${savedPath}story.json`,
@@ -43,6 +50,12 @@ export class StudioBuilder {
     );
   }
 
+  /**
+   * creates a template of an Action Node
+   * ? positionning is not currently working
+   * @param type type of the action
+   * @param level level on the feed to set the position
+   */
   private createActionNode(
     type: EnumActionType,
     level: { levelHorizontal: number; levelVertical: number } = {
@@ -65,6 +78,14 @@ export class StudioBuilder {
     return action;
   }
 
+  /**
+   * creates a template of a stage node
+   * ? positionning is not currently working
+   * @param audio filename of the audio file
+   * @param name name of the stage
+   * @param type type of the stage
+   * @param level level to set the positionning
+   */
   private createStageNode(
     audio: string,
     name: string,
@@ -103,6 +124,9 @@ export class StudioBuilder {
     return stage;
   }
 
+  /**
+   * setup the root of the story pack
+   */
   private async initRootStory(): Promise<string> {
     // Entry point
     let audioCover = assetPath + sanitizeFileName(this.root.title) + ".mp3";
@@ -160,6 +184,14 @@ export class StudioBuilder {
     return mainGroupId;
   }
 
+  /**
+   * Allow to create multiple submenus
+   * if the feed has lots of stories.
+   * So it's easier to navigate the stories -
+   * Driven by maxStoryPerPack
+   * @param name Name of the submenu
+   * @param idx to set the positionning (not currently working)
+   */
   private async createSubMenu(
     name: string,
     idx: number = 1
@@ -188,6 +220,13 @@ export class StudioBuilder {
     return menuPack;
   }
 
+  /**
+   * Allows to link the current pack with the parent pack in the navigation
+   * ! currently handles only 1 level of submenus
+   * @param currentPack submenu pack
+   * @param parentPack parent pack
+   * @param name name of the current pack
+   */
   private async linkCurrentPackToParentPack(
     currentPack: IStageNode,
     parentPack: IStageNode,
@@ -228,15 +267,17 @@ export class StudioBuilder {
     return okAction;
   }
 
+  /**
+   * Entry point to create the story pack
+   * @param list mp3 list from the RSS feed
+   * @param maxStoryPerPack divider to set when to create a new submenu (default: 10)
+   */
   public async createStory(list: IMP3List[], maxStoryPerPack: number = 10) {
     let mainGroupId = await this.initRootStory();
 
     //// Create the number of menus based on the number of stories in the list
 
     for (let i = 0; i < list.length / maxStoryPerPack; i++) {
-      //TODO: Enable generating imanges
-      //TODO: Enable generating audio cue
-      //TODD: Handle Position
       let menuPack = await this.createSubMenu(`Pack ${i + 1}`);
       let menuPackACtion = await this.linkCurrentPackToParentPack(
         menuPack,

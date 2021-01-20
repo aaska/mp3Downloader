@@ -10,7 +10,11 @@ import {
 } from "./utils/utils";
 import * as fs from "fs";
 
-export const savedPath = process.env.HOME + "/mp3Downloader/"; // Change here for folder you want to save
+/**
+ * @savedPath global var that setup the local folder where all documents will be created
+ * on MacOS it will be /Users/<current user>/mp3Downloader/
+ */
+export const savedPath = process.env.HOME + "/mp3Downloader/";
 export const assetPath = `${savedPath}assets/`;
 const temp = "/tmp";
 export interface IMP3List {
@@ -153,9 +157,16 @@ async function listener(e: any) {
 
   console.log(`[${value}]`);
 
-  await getRss(value);
+  try {
+    await getRss(value);
+  } catch (err) {
+    console.log(err);
+  }
 }
 
+/**
+ * Creates the directory where all stories and images will be stored
+ */
 checkAndCreateDirectory(savedPath);
 
 console.log("Enter RSS URL : ");
