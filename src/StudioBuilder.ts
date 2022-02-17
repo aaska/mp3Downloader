@@ -5,12 +5,13 @@ import {
   IRootObject,
   IStageNode
 } from "./lunii";
-import { assetPath, IFeedInformation, IMP3List, savedPath } from "./index";
+import { IFeedInformation, IMP3List } from "./index";
 import * as fs from "fs";
 import { v4 as uuidv4 } from "uuid";
 import {
   createLuniiImage,
   downloadTTSVoice,
+  exportTTSVoice,
   getFileName,
   sanitizeFileName
 } from "./utils/utils";
@@ -19,6 +20,8 @@ import {
  * Class to build the story.json compatible with STUdio
  */
 export class StudioBuilder {
+  private assetPath: string;
+  private storyPath: string;
   private actions: IActionNode[] = [];
   private stages: IStageNode[] = [];
   private root: IRootObject;
@@ -27,7 +30,9 @@ export class StudioBuilder {
    *
    * @param info feed information from the RSS
    */
-  constructor(info: IFeedInformation) {
+  constructor(info: IFeedInformation, storyPath: string) {
+    this.storyPath = storyPath;
+    this.assetPath = storyPath + "assets/";
     this.root = {
       version: 1,
       description: info.description ?? "",
@@ -43,7 +48,7 @@ export class StudioBuilder {
    */
   private writeAssetJson() {
     fs.writeFile(
-      `${savedPath}story.json`,
+      `${this.storyPath}story.json`,
       JSON.stringify(this.root),
       "utf8",
       (err) => console.log(err)
@@ -129,8 +134,10 @@ export class StudioBuilder {
    */
   private async initRootStory(): Promise<string> {
     // Entry point
-    let audioCover = assetPath + sanitizeFileName(this.root.title) + ".mp3";
-    await downloadTTSVoice(audioCover, this.root.title);
+    let audioCover =
+      this.assetPath + sanitizeFileName(this.root.title) + ".mp3";
+    // await downloadTTSVoice(audioCover, this.root.title);
+    exportTTSVoice(audioCover, this.root.title);
     createLuniiImage(audioCover + ".png", this.root.title);
     this.stages[0] = this.createStageNode(
       getFileName(audioCover),
@@ -149,8 +156,9 @@ export class StudioBuilder {
       wheel: true
     };
     // Main Menu
-    let audioMenu = assetPath + "chooseStoryPack" + ".mp3";
-    await downloadTTSVoice(audioMenu, "Choisi un Pack ou une histoire");
+    let audioMenu = this.assetPath + "chooseStoryPack" + ".mp3";
+    // await downloadTTSVoice(audioMenu, "Choisi un Pack ou une histoire");
+    exportTTSVoice(audioMenu, "Choisi un Pack ou une histoire");
     this.stages[1] = this.createStageNode(
       getFileName(audioMenu),
       "Menu node",
@@ -196,8 +204,9 @@ export class StudioBuilder {
     name: string,
     idx: number = 1
   ): Promise<IStageNode> {
-    let audio = assetPath + "chooseStory" + ".mp3";
-    await downloadTTSVoice(audio, "Choisi une histoire");
+    let audio = this.assetPath + "chooseStory" + ".mp3";
+    // await downloadTTSVoice(audio, "Choisi une histoire");
+    exportTTSVoice(audio, "Choisi une histoire");
     let menuPack = this.createStageNode(
       getFileName(audio),
       name,
@@ -233,8 +242,9 @@ export class StudioBuilder {
     name: string
   ): Promise<IActionNode> {
     // MenuOption is for parent Pack to link to this new MenuPack
-    let audioOption = assetPath + sanitizeFileName(name) + ".mp3";
-    await downloadTTSVoice(audioOption, name);
+    let audioOption = this.assetPath + sanitizeFileName(name) + ".mp3";
+    // await downloadTTSVoice(audioOption, name);
+    exportTTSVoice(audioOption, name);
     createLuniiImage(audioOption + ".png", name);
     let menuOption = this.createStageNode(
       getFileName(audioOption),
